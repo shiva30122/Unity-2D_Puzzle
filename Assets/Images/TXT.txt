@@ -1,0 +1,93 @@
+using UnityEngine;
+using System.Collections;
+
+public class SwapControler : MonoBehaviour
+{
+    public GameObject ImageChild; // Reference to the child GameObject
+
+    public Collider CurrentColider;
+    public CircleCollider2D TravelColliderFull; // Collider defining the travel path
+
+    public CircleCollider2D TravelColiderHalf;
+
+    public PolygonCollider2D TravelColiderCross;
+
+    public GameObject TargetGameObject; // GameObject defining the target position
+    public float MoveSpeed = 2.8f; // Speed of the movement in degrees per second
+    public float StopThreshold = 0.1f; // Distance threshold to consider as "reached" the target
+
+    private float currentAngle = 0f; // Current angle in degrees
+    private Vector2 pathCenter; // Center of the circular path
+    private float radius; // Radius of the circle
+    private Vector2 targetPosition; // Target position on the edge
+    private Coroutine movementCoroutine; // Reference to the current coroutine
+
+    void Start()
+    {
+        if (ImageChild != null && TravelCollider != null && TargetGameObject != null)
+        {
+            // Initialize path properties
+            pathCenter = TravelCollider.transform.position;
+            radius = TravelCollider.radius * Mathf.Max(TravelCollider.transform.lossyScale.x, TravelCollider.transform.lossyScale.y); // Adjust for scale
+        }
+        else
+        {
+            Debug.LogError("ImageChild, TravelCollider, or TargetGameObject is not assigned.");
+        }
+    }
+
+    public void ClickTouch()
+    {
+        // Recalculate the target position
+        Vector2 targetOffset = (Vector2)(TargetGameObject.transform.position - (Vector3)pathCenter).normalized * radius;
+        targetPosition = pathCenter + targetOffset;
+
+        // Stop any currently running coroutine
+        if (movementCoroutine != null)
+        {
+            StopCoroutine(movementCoroutine);
+        }
+
+        // Start the movement coroutine
+        movementCoroutine = StartCoroutine(CircularMovementCoroutine());
+    }
+
+    private IEnumerator CircularMovementCoroutine()
+    {
+        // Calculate the initial position on the circular path
+        Vector2 initialPosition = ImageChild.transform.position;
+        currentAngle = Mathf.Atan2(initialPosition.y - pathCenter.y, initialPosition.x - pathCenter.x) * Mathf.Rad2Deg;
+
+        while (true)
+        {
+            // Calculate the position on the circular path
+            Vector2 pathPosition = new Vector2(
+                pathCenter.x + radius * Mathf.Cos(currentAngle * Mathf.Deg2Rad),
+                pathCenter.y + radius * Mathf.Sin(currentAngle * Mathf.Deg2Rad)
+            );
+
+            // Set the position of the ImageChild GameObject on the circular edge
+            ImageChild.transform.position = pathPosition;
+
+            // Check if the current position is close enough to the target
+            if (Vector2.Distance(ImageChild.transform.position, targetPosition) <= StopThreshold)
+            {
+                Debug.Log("Target reached!");
+                yield break; // Exit the coroutine
+            }
+
+            // Move the angle along the circular path
+            currentAngle += MoveSpeed * Time.deltaTime;
+
+            // Keep the angle within 0-360 degrees
+            if (currentAngle >= 360f)
+            {
+                currentAngle -= 360f;
+            }
+
+            // Wait for the next frame
+            yield return null;
+        }
+    }
+}
+
