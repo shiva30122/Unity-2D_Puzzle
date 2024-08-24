@@ -4,13 +4,12 @@ using Unity.VisualScripting;
 using UnityEngine.Events;
 
 // Dev - Shar-Mi( Siva_Ball ) // Make Sure to Visit MY Git_Hub AND You_Tube And !.....
+// https://www.youtube.com/@Sharmiyt_  
+// https://github.com/shiva30122/Unity-2D_Puzzle
 
 // If You Found This UseFull Then LIKE IT !>>>>>>...........
 
-
-
 public class SwapHolder : MonoBehaviour
-
 
 {
 
@@ -200,7 +199,7 @@ public class SwapHolder : MonoBehaviour
     {
         
         // No Need Of Is Moving Because It Can Move Fater Than LIGTH So NO Problem
-        // UNTILL IF IT IS NOT A CIRCLE OR SWAPING THAT CAN MAKE COLIDE WIT NOT MOVING OBJECT !...
+        // UNTILL IF IT IS NOT A CIRCLE OR SWAPING THAT CAN MAKE COLIDE WIT NOT MOVING OBJECT !... OR DONTKNOW !...
         
 
 
@@ -269,7 +268,7 @@ public class SwapHolder : MonoBehaviour
 
 
 
-        //Enable For Use Touch Countroler That Make EASY To Acces All Objects !......
+        //Enable For Use Touch Countroler BOOL That Make EASY To Acces All Objects !......
         
         if(IsSwapFuctionManager == false)
         {
@@ -428,7 +427,7 @@ public void IsMatchingObjects()
 
             // TODO: Make AN EVENT !>>>??>?>?>./../.././......
 
-            print("    YOU WIN !.............................   ILOVE MY YOU 3000000   ");
+            print("    YOU WIN !.....................   ILOVE YOU 3000000 !..  ");
 
             print("    YOU WIN !... Moved To NextLevel     ");
             print("    YOU WIN !... Moved To NextLevel     ");
